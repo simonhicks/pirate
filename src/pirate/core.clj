@@ -64,7 +64,6 @@
   "fetches and parses the content at the gven url"
   [url] (html/html-resource (java.net.URL. url)))
 
-
 (defn- search-data 
   "performs the given query and returns a sequence of result rows as parsed html"
   [query opts] (html/select (fetch-url (get-url query opts)) 
@@ -158,8 +157,8 @@
   The torrent file is saved in *torrent-dir* (which defaults to ~/Downloads)"
   [title]
   (when-let [results (search title :category :video)]
-    (let [result (or (first (filter trusted? results)
-                     (first results)))
+    (let [result (or (first (filter trusted? results))
+                     (first results))
           url (:url result)
           file-name (last (re-split #"\/" url))
           path    (str *torrent-dir* "/" file-name)]
@@ -171,5 +170,5 @@
   are sorted according to (or :trusted :vip) then number of seeds descending.
   The torrent file is saved to *torrent-dir* (which defaults to ~/Downloads)"
   [series season episode]
-  (let [query-string (str series " " (format "s%02de%2d" season episode))]
+  (let [query-string (str series " " (format "s%02de%02d" season episode))]
     (get-movie query-string)))
